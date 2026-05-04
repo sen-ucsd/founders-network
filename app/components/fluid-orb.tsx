@@ -246,12 +246,6 @@ const SPHERE_FRAGMENT = /* glsl */ `
 /* Scene: cursor tracking, shared time, sphere spring physics         */
 /* ================================================================== */
 
-interface SceneRefs {
-  bgMat: React.RefObject<THREE.ShaderMaterial | null>;
-  sphereMat: React.RefObject<THREE.ShaderMaterial | null>;
-  sphereMesh: React.RefObject<THREE.Mesh | null>;
-}
-
 function Scene() {
   const bgMatRef = useRef<THREE.ShaderMaterial>(null);
   const sphereMatRef = useRef<THREE.ShaderMaterial>(null);
