@@ -38,23 +38,19 @@ const FLOW_GLSL = /* glsl */ `
   }
 
   /*
-   * Iridescent palette: indexed by a [0,1] key, smoothly cycles through
-   * black-green → olive → amber → gold and back. The fract+reflect step
-   * makes the cycle continuous so banded patterns don't show a seam.
+   * Iridescent palette: indexed by a [0,1] key. Smoothly cycles through
+   * the four uColor stops and back. The fract+reflect step makes the
+   * cycle continuous so banded patterns don't show a seam. The four
+   * stops are uniforms so a runtime palette picker can drive them.
    */
   vec3 iridescent(float k){
     k = fract(k);
     if (k > 0.5) k = 1.0 - k;
     k *= 2.0;
 
-    vec3 c0 = vec3(0.020, 0.035, 0.022);   // black-green
-    vec3 c1 = vec3(0.150, 0.205, 0.105);   // dark olive
-    vec3 c2 = vec3(0.490, 0.350, 0.150);   // amber
-    vec3 c3 = vec3(0.880, 0.740, 0.310);   // gold
-
-    vec3 col = mix(c0, c1, smoothstep(0.00, 0.40, k));
-    col      = mix(col, c2, smoothstep(0.30, 0.70, k));
-    col      = mix(col, c3, smoothstep(0.65, 1.00, k));
+    vec3 col = mix(uColor0, uColor1, smoothstep(0.00, 0.40, k));
+    col      = mix(col,    uColor2, smoothstep(0.30, 0.70, k));
+    col      = mix(col,    uColor3, smoothstep(0.65, 1.00, k));
     return col;
   }
 
@@ -119,6 +115,11 @@ const BG_FRAGMENT = /* glsl */ `
   precision highp float;
   uniform float uTime;
   uniform vec2  uResolution;
+  uniform vec3  uColor0;
+  uniform vec3  uColor1;
+  uniform vec3  uColor2;
+  uniform vec3  uColor3;
+  uniform vec3  uAccent;
 
   ${FLOW_GLSL}
 
@@ -131,7 +132,7 @@ const BG_FRAGMENT = /* glsl */ `
     // Soft accent in the lower-left quadrant so the empty side has weight.
     vec2 secCenter = vec2(-1.05, -0.55);
     float secD = length(p - secCenter);
-    col += smoothstep(0.85, 0.0, secD) * vec3(0.28, 0.20, 0.07) * 0.35;
+    col += smoothstep(0.85, 0.0, secD) * uAccent * 0.35;
 
     col *= smoothstep(2.10, 0.60, length(p));
 
@@ -183,6 +184,10 @@ const SPHERE_FRAGMENT = /* glsl */ `
   uniform float uAmbient;
   uniform float uSpecPower;
   uniform float uSpecStrength;
+  uniform vec3  uColor0;
+  uniform vec3  uColor1;
+  uniform vec3  uColor2;
+  uniform vec3  uColor3;
 
   varying vec3 vNormal;
   varying vec3 vViewDir;
@@ -246,7 +251,15 @@ const SPHERE_FRAGMENT = /* glsl */ `
 /* Scene: cursor tracking, shared time, sphere spring physics         */
 /* ================================================================== */
 
-function Scene() {
+interface PaletteUniforms {
+  uColor0: { value: THREE.Vector3 };
+  uColor1: { value: THREE.Vector3 };
+  uColor2: { value: THREE.Vector3 };
+  uColor3: { value: THREE.Vector3 };
+  uAccent: { value: THREE.Vector3 };
+}
+
+function Scene({ paletteUniforms }: { paletteUniforms: PaletteUniforms }) {
   const bgMatRef = useRef<THREE.ShaderMaterial>(null);
   const sphereMatRef = useRef<THREE.ShaderMaterial>(null);
   const sphereMeshRef = useRef<THREE.Mesh>(null);
@@ -261,13 +274,19 @@ function Scene() {
   const velocity = useRef(new THREE.Vector3());
   const target = useRef(new THREE.Vector3());
 
-  /* Uniforms ------------------------------------------------------- */
+  /* Uniforms — palette uniforms are shared by reference between bg
+   * and sphere so a single update flips both. */
   const bgUniforms = useMemo(
     () => ({
       uTime: { value: 0 },
       uResolution: { value: new THREE.Vector2(1, 1) },
+      uColor0: paletteUniforms.uColor0,
+      uColor1: paletteUniforms.uColor1,
+      uColor2: paletteUniforms.uColor2,
+      uColor3: paletteUniforms.uColor3,
+      uAccent: paletteUniforms.uAccent,
     }),
-    [],
+    [paletteUniforms],
   );
 
   const sphereUniforms = useMemo(
@@ -280,8 +299,12 @@ function Scene() {
       uAmbient: { value: 0.78 },
       uSpecPower: { value: 28.0 },
       uSpecStrength: { value: 0.45 },
+      uColor0: paletteUniforms.uColor0,
+      uColor1: paletteUniforms.uColor1,
+      uColor2: paletteUniforms.uColor2,
+      uColor3: paletteUniforms.uColor3,
     }),
-    [],
+    [paletteUniforms],
   );
 
   /* Cursor listener ------------------------------------------------ */
@@ -405,7 +428,11 @@ function Scene() {
 /* Canvas wrapper                                                     */
 /* ================================================================== */
 
-export function FluidOrb() {
+export function FluidOrb({
+  paletteUniforms,
+}: {
+  paletteUniforms: PaletteUniforms;
+}) {
   return (
     <div className="absolute inset-0">
       <Canvas
@@ -418,8 +445,10 @@ export function FluidOrb() {
           powerPreference: "high-performance",
         }}
       >
-        <Scene />
+        <Scene paletteUniforms={paletteUniforms} />
       </Canvas>
     </div>
   );
 }
+
+export type { PaletteUniforms };

@@ -1,7 +1,7 @@
 const NAV_ITEMS = [
-  { label: "ABOUT", href: "#about", showOnMobile: false },
-  { label: "MANIFESTO", href: "#manifesto", showOnMobile: false },
-  { label: "ORGS", href: "#orgs", showOnMobile: true },
+  { label: "MISSION", href: "#mission", showOnMobile: false },
+  { label: "PROGRAMS", href: "#programs", showOnMobile: false },
+  { label: "COALITION", href: "#coalition", showOnMobile: true },
   { label: "JOIN", href: "#join", showOnMobile: true },
 ];
 
