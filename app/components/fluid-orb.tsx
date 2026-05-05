@@ -355,10 +355,9 @@ function Scene() {
       pos.x += velocity.current.x * dt;
       pos.y += velocity.current.y * dt;
 
-      // Slow ambient rotation (uses sharedTime so it speeds up too).
-      sphereMeshRef.current.rotation.y = sharedTime.current * 0.08;
-      sphereMeshRef.current.rotation.x =
-        Math.sin(sharedTime.current * 0.13) * 0.10;
+      // No rotation: the time-warped noise inside flowColor already
+      // animates the surface, and the spherical-UV seam stays parked
+      // in the back hemisphere via the static rotation-y on the mesh.
     }
 
     lastCursor.current.x = cursor.current.x;
@@ -379,7 +378,17 @@ function Scene() {
         />
       </mesh>
 
-      <mesh ref={sphereMeshRef} scale={1.55}>
+      {/*
+       * rotation-y = -PI/2 sweeps the spherical-UV seam meridian
+       * (originally at object-space -X) onto -Z, parking it behind
+       * the sphere from the camera's POV so the discontinuity is
+       * never visible.
+       */}
+      <mesh
+        ref={sphereMeshRef}
+        scale={1.55}
+        rotation-y={-Math.PI / 2}
+      >
         <icosahedronGeometry args={[1, 14]} />
         <shaderMaterial
           ref={sphereMatRef}
