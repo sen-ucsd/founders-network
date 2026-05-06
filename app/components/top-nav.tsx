@@ -1,8 +1,9 @@
 const NAV_ITEMS = [
-  { label: "MISSION", href: "#mission", showOnMobile: false },
+  { label: "VISION", href: "#vision", showOnMobile: false },
+  { label: "CHAPTERS", href: "#chapters", showOnMobile: false },
   { label: "PROGRAMS", href: "#programs", showOnMobile: false },
   { label: "COALITION", href: "#coalition", showOnMobile: true },
-  { label: "JOIN", href: "#join", showOnMobile: true },
+  { label: "APPLY", href: "#join", showOnMobile: true },
 ];
 
 export function TopNav() {

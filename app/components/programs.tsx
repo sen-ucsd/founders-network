@@ -1,7 +1,6 @@
 /**
- * Programs section — the four concrete things Founders Network actually
- * does, ported and reworded from SEN's program list. Designed to slot
- * below Mission on the landing.
+ * Programs section — verbatim SEN program descriptions, headline,
+ * and subline. Sits below Chapters in the long landing.
  */
 
 interface Program {
@@ -12,19 +11,19 @@ interface Program {
 const PROGRAMS: Program[] = [
   {
     title: "Build Nights",
-    body: "Weekly working sessions. Quiet rooms, full focus, ship something by the time you leave.",
+    body: "Distraction-free working sessions every week where members ship side projects together and unblock each other in real time.",
   },
   {
     title: "Founder Conversations",
-    body: "Off-the-record talks with operators and investors who have actually done the thing.",
+    body: "Off-the-record talks with operators and investors who answer the questions you would never ask on a public stage.",
   },
   {
     title: "Inter-Chapter Exchange",
-    body: "Spend a week working out of another chapter's city. Live in their rooms, ship from their desks.",
+    body: "Members spend a week working out of another chapter's city. Crash with the local team. Build alongside them.",
   },
   {
     title: "Capital Connections",
-    body: "Warm intros to angels, funds, and accelerators when projects hit traction.",
+    body: "Warm intros to the angels, funds, and accelerators in each chapter's region for projects that show real traction.",
   },
 ];
 
@@ -37,11 +36,11 @@ export function Programs() {
       <div className="mx-auto max-w-6xl">
         <div className="mb-14 max-w-2xl">
           <h2 className="hero-text text-4xl italic leading-tight text-neutral-50 sm:text-5xl">
-            What we run.
+            The infrastructure for impact.
           </h2>
           <p className="mt-5 text-base leading-relaxed text-neutral-300 sm:text-lg">
-            Four programs, designed to put the work first. Members get all
-            of them; chapters opt into all of them.
+            Every chapter runs the same four programs, designed to compound
+            the work members do on their own products and on each other&apos;s.
           </p>
         </div>
 
