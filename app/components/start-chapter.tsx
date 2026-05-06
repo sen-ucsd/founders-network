@@ -63,7 +63,7 @@ export function StartChapter() {
 
         <div className="mt-12 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-6">
           <a
-            href="#join"
+            href="/apply"
             className="glass-cta-light rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-900"
           >
             Start the Application

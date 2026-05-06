@@ -17,7 +17,7 @@ export function Hero() {
 
       <div className="pointer-events-auto mt-7 flex flex-col items-stretch gap-3 sm:mt-10 sm:flex-row sm:items-center sm:gap-4">
         <a
-          href="#join"
+          href="/apply"
           className="glass-cta-light rounded-full px-6 py-2.5 text-center text-xs font-semibold uppercase tracking-[0.2em] text-neutral-900"
         >
           Start a Chapter

@@ -1,24 +1,29 @@
+import Link from "next/link";
+
 const NAV_ITEMS = [
-  { label: "VISION", href: "#vision", showOnMobile: false },
-  { label: "CHAPTERS", href: "#chapters", showOnMobile: false },
-  { label: "PROGRAMS", href: "#programs", showOnMobile: false },
-  { label: "COALITION", href: "#coalition", showOnMobile: true },
-  { label: "APPLY", href: "#join", showOnMobile: true },
+  { label: "VISION", href: "/#vision", showOnMobile: false },
+  { label: "CHAPTERS", href: "/#chapters", showOnMobile: false },
+  { label: "PROGRAMS", href: "/#programs", showOnMobile: false },
+  { label: "COALITION", href: "/#coalition", showOnMobile: true },
+  { label: "APPLY", href: "/apply", showOnMobile: true },
 ];
 
 export function TopNav() {
   return (
     <header className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-5 py-5 sm:px-10 sm:py-8">
-      <div className="flex flex-col text-[11px] font-medium uppercase leading-tight tracking-[0.18em] text-neutral-100">
+      <Link
+        href="/"
+        className="flex flex-col text-[11px] font-medium uppercase leading-tight tracking-[0.18em] text-neutral-100"
+      >
         <span className="text-sm font-semibold tracking-[0.04em] normal-case sm:text-base">
           founders network
         </span>
         <span className="text-neutral-300/80">ucsd</span>
-      </div>
+      </Link>
 
       <nav className="flex items-center gap-3 text-[10px] font-medium uppercase tracking-[0.22em] text-neutral-200 sm:gap-6 sm:text-[11px]">
         {NAV_ITEMS.map((item) => (
-          <a
+          <Link
             key={item.label}
             href={item.href}
             className={
@@ -27,7 +32,7 @@ export function TopNav() {
             }
           >
             {item.label}
-          </a>
+          </Link>
         ))}
       </nav>
     </header>
