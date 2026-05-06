@@ -152,3 +152,40 @@ export function hexToLinearRGB(hex: string): [number, number, number] {
 function srgbToLinear(c: number): number {
   return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
 }
+
+function linearToSRGB(c: number): number {
+  if (c <= 0) return 0;
+  if (c >= 1) return 1;
+  return c <= 0.0031308 ? c * 12.92 : 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
+}
+
+/**
+ * Inverse of {@link hexToLinearRGB}. Takes a linear-space RGB tuple
+ * (e.g. the lerped Vector3 actually shown by the shader) and returns
+ * an sRGB hex string suitable for pasting into design tools or the
+ * `COLOR_SCHEMES` table.
+ */
+export function linearRGBToHex(rgb: [number, number, number]): string {
+  const [r, g, b] = rgb.map((c) =>
+    Math.round(linearToSRGB(c) * 255),
+  ) as [number, number, number];
+  const toHex = (n: number) =>
+    Math.max(0, Math.min(255, n)).toString(16).padStart(2, "0");
+  return "#" + toHex(r) + toHex(g) + toHex(b);
+}
+
+/**
+ * Lerp two sRGB hex strings the same way the shader does — i.e. in
+ * linear space — and return the resulting sRGB hex. Use this to
+ * "snapshot" what the shader is actually showing at any blend point.
+ */
+export function blendHex(a: string, b: string, t: number): string {
+  const la = hexToLinearRGB(a);
+  const lb = hexToLinearRGB(b);
+  const f = Math.max(0, Math.min(1, t));
+  return linearRGBToHex([
+    la[0] * (1 - f) + lb[0] * f,
+    la[1] * (1 - f) + lb[1] * f,
+    la[2] * (1 - f) + lb[2] * f,
+  ]);
+}
