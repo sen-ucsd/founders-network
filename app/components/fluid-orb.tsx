@@ -8,7 +8,11 @@ import * as THREE from "three";
 /* Shared GLSL                                                        */
 /* ================================================================== */
 
-const FLOW_GLSL = /* glsl */ `
+/*
+ * NOISE_GLSL — vertex-safe helpers (no uniform refs, so it can be
+ * spliced into either vertex or fragment shaders).
+ */
+const NOISE_GLSL = /* glsl */ `
   float hash21(vec2 p){
     p = fract(p * vec2(123.34, 456.21));
     p += dot(p, p + 45.32);
@@ -36,13 +40,14 @@ const FLOW_GLSL = /* glsl */ `
     }
     return v;
   }
+`;
 
-  /*
-   * Iridescent palette: indexed by a [0,1] key. Smoothly cycles through
-   * the four uColor stops and back. The fract+reflect step makes the
-   * cycle continuous so banded patterns don't show a seam. The four
-   * stops are uniforms so a runtime palette picker can drive them.
-   */
+/*
+ * COLOR_GLSL — references uColor0..3 uniforms, so this is FRAGMENT-ONLY.
+ * Splicing this into a vertex shader that doesn't declare those uniforms
+ * is a GLSL compile error and silently kills the whole material.
+ */
+const COLOR_GLSL = /* glsl */ `
   vec3 iridescent(float k){
     k = fract(k);
     if (k > 0.5) k = 1.0 - k;
@@ -54,17 +59,6 @@ const FLOW_GLSL = /* glsl */ `
     return col;
   }
 
-  /*
-   * Banded flow:
-   *   1. FBM domain-warp the input position so the field swirls.
-   *   2. Project the warped position onto a slanted axis.
-   *   3. Take sin(axis) — a stripe pattern, but warped by the FBM so the
-   *      stripes become curving organic bands instead of straight lines.
-   *   4. Use that banded value (plus extra noise) as the palette key, so
-   *      adjacent bands pull different colours from the iridescent cycle.
-   *   5. Multiply by a soft noise mask to carve dark "valleys" between
-   *      the bright bands — gives the look of viewing oil on glass.
-   */
   vec3 flowColor(vec2 p, float t){
     vec2 q = vec2(
       fbm(p * 0.8 + vec2(0.0, t)),
@@ -75,16 +69,13 @@ const FLOW_GLSL = /* glsl */ `
       fbm(p + 1.8 * q + vec2(8.3, t * 0.5))
     );
 
-    // Two stripe families at different angles, warped by the FBM field.
     float ax1 = (p.x * 0.55 + p.y * 0.35) + r.x * 1.7 + r.y * 0.6;
     float ax2 = (p.x * 0.40 - p.y * 0.65) + r.y * 1.5 + r.x * 0.4;
     float v1  = sin(ax1 * 5.5 + t * 0.45);
     float v2  = sin(ax2 * 7.5 + t * 0.30);
 
-    // Combined band value, [-1, 1].
     float bands = v1 * 0.65 + v2 * 0.40;
 
-    // Key into the iridescent palette.
     float key = bands * 0.45
               + length(r) * 0.28
               + p.x * 0.05
@@ -92,9 +83,7 @@ const FLOW_GLSL = /* glsl */ `
 
     vec3 col = iridescent(key);
 
-    // Dark valleys where the noise dips: stripes only show on the brighter
-    // half of the field.
-    float lift = q.x * 0.5 + 0.5;       // [0, 1]
+    float lift = q.x * 0.5 + 0.5;
     col *= 0.35 + 0.85 * smoothstep(0.10, 0.85, lift);
 
     return col;
@@ -121,7 +110,8 @@ const BG_FRAGMENT = /* glsl */ `
   uniform vec3  uColor3;
   uniform vec3  uAccent;
 
-  ${FLOW_GLSL}
+  ${NOISE_GLSL}
+  ${COLOR_GLSL}
 
   void main(){
     vec2 p = (gl_FragCoord.xy - 0.5 * uResolution) / min(uResolution.x, uResolution.y);
@@ -152,7 +142,7 @@ const SPHERE_VERTEX = /* glsl */ `
   varying vec3 vViewDir;
   varying vec3 vObjNormal;
 
-  ${FLOW_GLSL}
+  ${NOISE_GLSL}
 
   float bump(vec3 p){
     return vnoise(p.xy + p.z * 0.7);
@@ -193,7 +183,8 @@ const SPHERE_FRAGMENT = /* glsl */ `
   varying vec3 vViewDir;
   varying vec3 vObjNormal;
 
-  ${FLOW_GLSL}
+  ${NOISE_GLSL}
+  ${COLOR_GLSL}
 
   vec2 sphericalUv(vec3 dir){
     float lat = asin(clamp(dir.y, -1.0, 1.0));
