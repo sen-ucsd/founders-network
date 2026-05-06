@@ -255,49 +255,6 @@ body {
 }
 
 /* ---------------------------------------------------------------- */
-/* Palette preview slider (temporary — remove with the picker)      */
-/* ---------------------------------------------------------------- */
-
-.palette-range {
-  appearance: none;
-  -webkit-appearance: none;
-  height: 6px;
-  border-radius: 999px;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0.10),
-    rgba(255, 255, 255, 0.30)
-  );
-  outline: none;
-  cursor: pointer;
-}
-.palette-range::-webkit-slider-thumb {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  cursor: grab;
-  transition: transform 120ms ease;
-}
-.palette-range::-webkit-slider-thumb:active {
-  transform: scale(1.1);
-  cursor: grabbing;
-}
-.palette-range::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  cursor: grab;
-}
-
-/* ---------------------------------------------------------------- */
 /* Spinning badge                                                   */
 /* ---------------------------------------------------------------- */
 
