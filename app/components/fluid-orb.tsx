@@ -334,7 +334,19 @@ function Scene({ paletteUniforms }: { paletteUniforms: PaletteUniforms }) {
       sphereMatRef.current.uniforms.uTime.value = sharedTime.current;
     }
 
-    /* 3. Sphere mouse-follow with exponential ease-out toward target */
+    /* 3. Sphere mouse-repulsion with bounded ease-out toward target.
+     *
+     * Inverted from the earlier attraction model: when the cursor
+     * approaches the sphere's home position, the sphere displaces
+     * AWAY from the cursor; when the cursor moves far away, the
+     * sphere returns to home. Magnitude is capped by MAX_OFFSET so
+     * the sphere never escapes a bounded region around home.
+     *
+     * Direction is computed from cursor → home (so the offset moves
+     * the sphere further along the away-from-cursor axis).
+     * Magnitude uses a smoothstep on cursor-to-home distance, peaking
+     * at proximity and falling to zero past REPULSION_RANGE.
+     */
     if (sphereMeshRef.current) {
       const homeX = 1.15;
       const homeY = 0.5;
@@ -342,19 +354,26 @@ function Scene({ paletteUniforms }: { paletteUniforms: PaletteUniforms }) {
       const mouseWorldY = cursor.current.y * 1.1;
 
       const pos = sphereMeshRef.current.position;
-      const toMouseX = mouseWorldX - pos.x;
-      const toMouseY = mouseWorldY - pos.y;
-      const dist = Math.hypot(toMouseX, toMouseY);
-      const attraction = Math.exp(-dist * 0.55);
 
-      let offsetX = (mouseWorldX - homeX) * attraction * 0.65;
-      let offsetY = (mouseWorldY - homeY) * attraction * 0.65;
+      const awayX = homeX - mouseWorldX;
+      const awayY = homeY - mouseWorldY;
+      const cursorDistToHome = Math.hypot(awayX, awayY);
+
+      const REPULSION_RANGE = 1.3;
       const MAX_OFFSET = 0.7;
-      const offLen = Math.hypot(offsetX, offsetY);
-      if (offLen > MAX_OFFSET) {
-        offsetX = (offsetX / offLen) * MAX_OFFSET;
-        offsetY = (offsetY / offLen) * MAX_OFFSET;
-      }
+      const proximity = Math.max(
+        0,
+        1 - cursorDistToHome / REPULSION_RANGE,
+      );
+      const magnitude = proximity * proximity * MAX_OFFSET;
+
+      const safeDist = Math.max(cursorDistToHome, 0.001);
+      const dirX = awayX / safeDist;
+      const dirY = awayY / safeDist;
+
+      const offsetX = dirX * magnitude;
+      const offsetY = dirY * magnitude;
+
       target.current.set(homeX + offsetX, homeY + offsetY, 0);
 
       /*
