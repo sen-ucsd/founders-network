@@ -4,12 +4,20 @@
  * decisions memo: don't advertise placeholder chapters). San Diego
  * is the founding chapter; the closing line points at expansion
  * without naming specific cities until they're real.
+ *
+ * Each real chapter card links to its dedicated page at
+ * /chapters/<slug>. San Diego currently routes to the GBM #1
+ * slideshow living there.
  */
+
+import Link from "next/link";
 
 interface Chapter {
   name: string;
   region: string;
   status: string;
+  href: string;
+  cta: string;
   quote?: string;
 }
 
@@ -18,6 +26,8 @@ const CHAPTERS: Chapter[] = [
     name: "San Diego",
     region: "California",
     status: "Founding Chapter",
+    href: "/chapters/san-diego",
+    cta: "Open the chapter",
     quote:
       "The energy here is different. We are welding the future, not talking about it.",
   },
@@ -42,9 +52,10 @@ export function Chapters() {
 
         <div className="grid gap-4 sm:grid-cols-2">
           {CHAPTERS.map((c) => (
-            <article
+            <Link
               key={c.name}
-              className="glass-card flex flex-col gap-5 p-6 sm:p-8"
+              href={c.href}
+              className="glass-card group flex flex-col gap-5 p-6 sm:p-8"
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
@@ -64,7 +75,13 @@ export function Chapters() {
                   &ldquo;{c.quote}&rdquo;
                 </p>
               ) : null}
-            </article>
+              <span className="mt-2 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.22em] text-neutral-300 transition group-hover:text-white">
+                {c.cta}
+                <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
+                  →
+                </span>
+              </span>
+            </Link>
           ))}
 
           {/* Visual placeholder representing the expansion narrative without
