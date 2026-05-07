@@ -387,9 +387,6 @@ function SuccessView({ name }: { name: string }) {
             days. If we move forward, you&apos;ll hear from one of the
             founding team for two short conversations.
           </p>
-          <p className="text-[11px] uppercase tracking-[0.28em] text-neutral-400">
-            Per Ardua Ad Astra
-          </p>
           <Link
             href="/"
             className="mt-2 self-start text-[11px] font-medium uppercase tracking-[0.22em] text-neutral-300 transition hover:text-white"

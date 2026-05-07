@@ -29,10 +29,6 @@ export function Hero() {
           Explore the Network
         </a>
       </div>
-
-      <p className="mt-12 text-[10px] font-medium uppercase tracking-[0.42em] text-neutral-400/80 drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)] sm:mt-16 sm:text-[11px]">
-        Per Ardua Ad Astra
-      </p>
     </div>
   );
 }

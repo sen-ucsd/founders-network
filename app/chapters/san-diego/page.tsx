@@ -48,7 +48,6 @@ const SLIDES: Slide[] = [
         founding chapter of a network we are taking outward from here.
       </>
     ),
-    footer: "Per Ardua Ad Astra",
   },
   {
     id: "state",
@@ -166,14 +165,14 @@ const SLIDES: Slide[] = [
   {
     id: "outro",
     eyebrow: "See you at GBM #2",
-    title: <>Per Ardua Ad Astra.</>,
+    title: <>Now go build something.</>,
     body: (
       <>
-        Through hardships to the stars. Founders Network lives at
-        ucsdfounders.com, applications to charter chapters on other
-        campuses are open at /apply, and the next GBM lands when there is
-        something worth gathering for. Until then, ship something this
-        week that you can show on the wall the next time we meet.
+        Founders Network lives at ucsdfounders.com, applications to
+        charter chapters on other campuses are open at /apply, and the
+        next GBM lands when there is something worth gathering for. Until
+        then, ship something this week that you can show on the wall the
+        next time we meet.
       </>
     ),
   },
