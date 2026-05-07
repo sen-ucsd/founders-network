@@ -262,7 +262,6 @@ function Scene({ paletteUniforms }: { paletteUniforms: PaletteUniforms }) {
   /* Shared animation state ----------------------------------------- */
   const sharedTime = useRef(0);
   const animSpeed = useRef(1);
-  const velocity = useRef(new THREE.Vector3());
   const target = useRef(new THREE.Vector3());
 
   /* Uniforms — palette uniforms are shared by reference between bg
@@ -335,7 +334,7 @@ function Scene({ paletteUniforms }: { paletteUniforms: PaletteUniforms }) {
       sphereMatRef.current.uniforms.uTime.value = sharedTime.current;
     }
 
-    /* 3. Sphere mouse-follow with bounded spring */
+    /* 3. Sphere mouse-follow with exponential ease-out toward target */
     if (sphereMeshRef.current) {
       const homeX = 1.15;
       const homeY = 0.5;
@@ -358,16 +357,21 @@ function Scene({ paletteUniforms }: { paletteUniforms: PaletteUniforms }) {
       }
       target.current.set(homeX + offsetX, homeY + offsetY, 0);
 
-      const stiffness = 14;
-      const damping = 6;
-      const fx = (target.current.x - pos.x) * stiffness;
-      const fy = (target.current.y - pos.y) * stiffness;
-      velocity.current.x += fx * dt;
-      velocity.current.y += fy * dt;
-      velocity.current.x *= Math.exp(-damping * dt);
-      velocity.current.y *= Math.exp(-damping * dt);
-      pos.x += velocity.current.x * dt;
-      pos.y += velocity.current.y * dt;
+      /*
+       * Exponential ease-out: pos advances by a constant fraction
+       * of the remaining distance per second, framerate-independent.
+       * Higher EASE_RATE = snappier initial dash and tighter final
+       * approach. Visually: fast first, decelerating into target,
+       * never overshooting — same feel as monopo's sphere.
+       *
+       * (Spring physics + damping was here previously and felt laggy
+       * because velocity has to build up before the sphere starts
+       * moving, then carries past the target before settling.)
+       */
+      const EASE_RATE = 14;
+      const f = 1 - Math.exp(-EASE_RATE * dt);
+      pos.x += (target.current.x - pos.x) * f;
+      pos.y += (target.current.y - pos.y) * f;
 
       // No rotation: the time-warped noise inside flowColor already
       // animates the surface, and the spherical-UV seam stays parked
