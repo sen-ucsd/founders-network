@@ -358,20 +358,35 @@ function Scene({ paletteUniforms }: { paletteUniforms: PaletteUniforms }) {
       target.current.set(homeX + offsetX, homeY + offsetY, 0);
 
       /*
-       * Exponential ease-out: pos advances by a constant fraction
-       * of the remaining distance per second, framerate-independent.
-       * Higher EASE_RATE = snappier initial dash and tighter final
-       * approach. Visually: fast first, decelerating into target,
-       * never overshooting — same feel as monopo's sphere.
+       * Distance-dependent ease-out: rate is high while the sphere
+       * is far from target (fast initial dash) and drops sharply
+       * as it nears (long, visible deceleration tail).
        *
-       * (Spring physics + damping was here previously and felt laggy
-       * because velocity has to build up before the sphere starts
-       * moving, then carries past the target before settling.)
+       * Pure exponential decay gives a constant fractional rate,
+       * which means the deceleration is the same shape at every
+       * scale and reads as "uniform settle". Stretching the tail
+       * needs a non-uniform rate. We blend FAST_RATE → SLOW_RATE
+       * with a smoothstep on `dist / FAR_DIST` so the transition
+       * itself is smooth.
+       *
+       *   dist >> FAR_DIST  →  rate ≈ FAST_RATE   (snappy dash)
+       *   dist == FAR_DIST  →  rate ≈ FAST_RATE
+       *   dist <  FAR_DIST  →  rate slides toward SLOW_RATE
+       *   dist ≈ 0          →  rate ≈ SLOW_RATE   (long glide)
        */
-      const EASE_RATE = 14;
-      const f = 1 - Math.exp(-EASE_RATE * dt);
-      pos.x += (target.current.x - pos.x) * f;
-      pos.y += (target.current.y - pos.y) * f;
+      const FAST_RATE = 26;
+      const SLOW_RATE = 2.4;
+      const FAR_DIST = 0.45;
+
+      const dx = target.current.x - pos.x;
+      const dy = target.current.y - pos.y;
+      const distNow = Math.hypot(dx, dy);
+      const tt = Math.min(distNow / FAR_DIST, 1);
+      const blend = tt * tt * (3 - 2 * tt); // smoothstep
+      const rate = SLOW_RATE + (FAST_RATE - SLOW_RATE) * blend;
+      const f = 1 - Math.exp(-rate * dt);
+      pos.x += dx * f;
+      pos.y += dy * f;
 
       // No rotation: the time-warped noise inside flowColor already
       // animates the surface, and the spherical-UV seam stays parked
