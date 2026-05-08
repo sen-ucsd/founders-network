@@ -116,6 +116,17 @@ const SLIDES: Slide[] = [
     ],
   },
   {
+    id: "retreat",
+    eyebrow: "The retreat",
+    title: <>Big Bear, May 22 to 24.</>,
+    body: (
+      <>
+        The chapter heads off-campus for three days to plan, ship, and bond
+        as the founding cohort. The shape of next quarter gets drawn there.
+      </>
+    ),
+  },
+  {
     id: "sponsorship",
     eyebrow: "How we fund this",
     title: <>Every San Diego business is a partner.</>,
