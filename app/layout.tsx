@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
-import { Inter, Instrument_Serif } from "next/font/google";
+import { Instrument_Sans, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+// Instrument Sans pairs natively with Instrument Serif italic (same
+// foundry, same family) and gives the body a more distinctive, on-
+// brand voice than Inter, which reads as generic-Arial at small
+// tracked-out sizes.
+const instrumentSans = Instrument_Sans({
   variable: "--font-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const instrumentSerif = Instrument_Serif({
@@ -81,9 +86,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${instrumentSerif.variable} h-full antialiased`}
+      className={`${instrumentSans.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-[#0a0a08] text-neutral-200">{children}</body>
+      <body className="font-sans min-h-full bg-[#0a0a08] text-neutral-200">
+        {children}
+      </body>
     </html>
   );
 }

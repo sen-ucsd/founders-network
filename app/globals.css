@@ -255,26 +255,35 @@ body {
 }
 
 /* ---------------------------------------------------------------- */
-/* Slide enter animations                                           */
-/* (used on /chapters/san-diego presentation)                       */
+/* Slide crossfade (used on /chapters/san-diego presentation)       */
+/*                                                                  */
+/* The outgoing slide stays mounted with .slide-anim-leave running   */
+/* a fade-out, while the incoming slide mounts with .slide-anim-     */
+/* enter running a fade-in. Both occupy the same absolute slot      */
+/* during the overlap. After ~520ms the outgoing unmounts and the   */
+/* incoming becomes the resident slide.                              */
 /* ---------------------------------------------------------------- */
 
-.slide-enter {
-  animation: slide-enter-forward 460ms cubic-bezier(0.22, 0.78, 0.32, 1) both;
+.slide-anim-enter {
+  animation: slide-fade-in 520ms cubic-bezier(0.22, 0.78, 0.32, 1) both;
 }
-.slide-enter.slide-enter-back {
-  animation-name: slide-enter-back;
+.slide-anim-leave {
+  animation: slide-fade-out 520ms cubic-bezier(0.22, 0.78, 0.32, 1) both;
+  pointer-events: none;
 }
-@keyframes slide-enter-forward {
-  from { opacity: 0; transform: translateX(36px) scale(0.985); filter: blur(2px); }
-  to   { opacity: 1; transform: translateX(0)    scale(1);     filter: blur(0); }
+@keyframes slide-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
-@keyframes slide-enter-back {
-  from { opacity: 0; transform: translateX(-36px) scale(0.985); filter: blur(2px); }
-  to   { opacity: 1; transform: translateX(0)     scale(1);     filter: blur(0); }
+@keyframes slide-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .slide-enter { animation: none; }
+  .slide-anim-enter,
+  .slide-anim-leave {
+    animation-duration: 1ms;
+  }
 }
 
 /* ---------------------------------------------------------------- */
