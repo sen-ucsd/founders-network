@@ -118,13 +118,28 @@ const SLIDES: Slide[] = [
   {
     id: "retreat",
     eyebrow: "The retreat",
-    title: <>Big Bear, May 22 to 24.</>,
+    title: <>Big Bear, May 23 to 24.</>,
     body: (
       <>
-        The chapter heads off-campus for three days to plan, ship, and bond
-        as the founding cohort. The shape of next quarter gets drawn there.
+        Off-campus at a ten-bed, four-and-a-half-bath lodge with games, an
+        outdoor BBQ, and a jacuzzi, where the founding cohort plans and
+        ships together for two days.
       </>
     ),
+    items: [
+      {
+        label: "$90 per person",
+        body: "All-in for the lodge and the weekend.",
+      },
+      {
+        label: "7 slots open",
+        body: "First-come as people respond.",
+      },
+      {
+        label: "Deadline tonight",
+        body: "Message Noah at (646) 648-3308 to claim a slot.",
+      },
+    ],
   },
   {
     id: "sponsorship",
