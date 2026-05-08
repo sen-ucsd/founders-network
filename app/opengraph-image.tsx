@@ -27,16 +27,19 @@ export default async function Image() {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          background: "#0a0a08",
+          background: "#080a0b",
+          // Bone-grey + glacier-blue palette, mirroring the live site's
+          // locked Bone/Glacier shader scheme. No amber or olive
+          // anywhere.
           backgroundImage: [
-            // Big amber/bronze orb in the upper right (echo of the live sphere)
-            "radial-gradient(circle at 78% 28%, rgba(220, 170, 80, 0.55) 0%, rgba(120, 80, 30, 0.45) 18%, rgba(40, 35, 20, 0.6) 38%, transparent 60%)",
-            // Dim olive accent lower left
-            "radial-gradient(circle at 18% 78%, rgba(90, 110, 70, 0.35) 0%, transparent 45%)",
-            // Soft amber bloom under the orb
-            "radial-gradient(circle at 70% 60%, rgba(160, 110, 40, 0.18) 0%, transparent 55%)",
-            // Deep base
-            "radial-gradient(ellipse at 50% 50%, #1a1812 0%, #0a0a08 60%, #050504 100%)",
+            // Cool steel orb upper-right (echo of the live sphere)
+            "radial-gradient(circle at 78% 28%, rgba(170, 178, 184, 0.42) 0%, rgba(85, 100, 110, 0.32) 22%, rgba(35, 42, 48, 0.50) 42%, transparent 62%)",
+            // Glacier-blue accent lower-left
+            "radial-gradient(circle at 20% 80%, rgba(94, 122, 138, 0.28) 0%, transparent 48%)",
+            // Soft bone-cream bloom right of centre
+            "radial-gradient(circle at 68% 56%, rgba(216, 221, 226, 0.12) 0%, transparent 55%)",
+            // Deep cool base
+            "radial-gradient(ellipse at 50% 50%, #14181c 0%, #0a0d10 60%, #060809 100%)",
           ].join(", "),
           color: "#f5f5f0",
           padding: "72px 80px",
