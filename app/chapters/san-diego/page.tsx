@@ -93,17 +93,21 @@ const SLIDES: Slide[] = [
   {
     id: "events",
     eyebrow: "On the calendar",
-    title: <>Two events to ship this month.</>,
+    title: <>Three events to ship this month.</>,
     body: (
       <>
-        Both events pull speakers, audience, and energy from the network and
-        feed the result back into it.
+        Each pulls speakers, audience, and energy from the network and feeds
+        the result back into it.
       </>
     ),
     items: [
       {
         label: "May 8",
         body: "Sit-down with Neal that funnels into a co-branded mega-hike and the Skool community.",
+      },
+      {
+        label: "May 20",
+        body: "Entrepreneur-At-the-Table session with Mark Bowles, the chapter's closed-door operator format.",
       },
       {
         label: "End of the month",
