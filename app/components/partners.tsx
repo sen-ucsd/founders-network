@@ -2,20 +2,44 @@
  * UCSD coalition section — the partner orgs inside the founding
  * chapter. Distinct from "chapters" (geographic nodes); this is the
  * collection of student-led orgs that comprise the UCSD chapter.
+ *
+ * Order is deliberate: SEN as the founding partner, RAIN as the
+ * anchor coalition partner, Women in Rady as the active collab, then
+ * the remaining orgs roughly grouped by domain.
  */
 
 interface CoalitionOrg {
-  name: string;
+  /** Primary display name on the card. Required. */
   short: string;
-  role: string;
+  /** Optional full name shown beneath. Skip if uncertain. */
+  name?: string;
+  /** Optional eyebrow above the name. Only set for special members. */
+  role?: string;
 }
 
 const COALITION: CoalitionOrg[] = [
   {
-    name: "Student Entrepreneurs Network",
     short: "SEN",
+    name: "Student Entrepreneurs Network",
     role: "Founding partner",
   },
+  { short: "RAIN" },
+  { short: "Women in Rady" },
+  {
+    short: "CSE Society",
+    name: "Computer Science & Engineering Society",
+  },
+  {
+    short: "IEEE EMBS",
+    name: "Engineering in Medicine & Biology Society",
+  },
+  { short: "BMES", name: "Biomedical Engineering Society" },
+  { short: "BEGS", name: "Bioengineering Graduate Society" },
+  { short: "HDSI Student Council" },
+  { short: "DS3", name: "Data Science Student Society" },
+  { short: "WIC", name: "Women in Computing" },
+  { short: "GMBE" },
+  { short: "Bioengineering Project Team" },
 ];
 
 export function Partners() {
@@ -30,8 +54,8 @@ export function Partners() {
             UCSD coalition.
           </h2>
           <p className="mt-5 text-base leading-relaxed text-neutral-300 sm:text-lg">
-            The orgs that make up the founding chapter. Business,
-            engineering, science, design. One table.
+            The orgs that make up the founding chapter, gathered at one
+            table across business, engineering, science, and design.
           </p>
         </div>
 
@@ -39,28 +63,23 @@ export function Partners() {
           {COALITION.map((org) => (
             <div
               key={org.short}
-              className="glass-card flex h-24 flex-col items-start justify-between p-3 sm:h-28 sm:p-4"
+              className="glass-card flex h-28 flex-col items-start p-3 sm:h-32 sm:p-4"
             >
-              <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-neutral-200">
-                {org.role}
-              </span>
-              <div>
-                <div className="text-sm font-semibold text-white">
+              {org.role ? (
+                <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-neutral-200">
+                  {org.role}
+                </span>
+              ) : null}
+              <div className="mt-auto">
+                <div className="text-sm font-semibold leading-snug text-white">
                   {org.short}
                 </div>
-                <div className="mt-0.5 text-[11px] leading-snug text-neutral-300">
-                  {org.name}
-                </div>
+                {org.name ? (
+                  <div className="mt-1 text-[11px] leading-snug text-neutral-300">
+                    {org.name}
+                  </div>
+                ) : null}
               </div>
-            </div>
-          ))}
-
-          {Array.from({ length: 9 }).map((_, i) => (
-            <div
-              key={`placeholder-${i}`}
-              className="flex h-24 items-center justify-center rounded-xl border border-dashed border-white/12 bg-white/[0.02] text-[10px] uppercase tracking-[0.22em] text-neutral-500 sm:h-28"
-            >
-              your org here
             </div>
           ))}
         </div>
