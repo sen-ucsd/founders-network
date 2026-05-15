@@ -104,13 +104,17 @@ export default function FoundersHikePage() {
   };
 
   return (
-    <main className="relative min-h-screen bg-[#06080a] text-neutral-100">
-      {/* Torrey Pines aerial as the FIXED page background. Stays
-       * pinned to the viewport while every section scrolls over it,
-       * so the whole route reads as one continuous parallax surface.
-       * `position: fixed` (instead of `background-attachment: fixed`)
-       * is the reliable cross-browser way to do this — the latter is
-       * famously broken on iOS Safari with momentum scrolling. */}
+    /*
+     * Single-viewport "scroll-snap" layout. The page itself doesn't
+     * scroll — body is locked at 100vh, overflow hidden. The fixed
+     * Torrey Pines photo + the page vignette are anchored to the
+     * viewport and never move. Inside, a snap-mandatory scroll
+     * container holds the four content sections, each sized to one
+     * viewport. As you wheel/swipe, each section snaps into place
+     * over the photo and the previous one slides off the top — the
+     * "text comes up over a still background" effect.
+     */
+    <main className="relative h-screen overflow-hidden bg-[#06080a] text-neutral-100">
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 z-0"
@@ -121,31 +125,31 @@ export default function FoundersHikePage() {
           backgroundRepeat: "no-repeat",
         }}
       />
-      {/* Light page-wide vignette pinned to viewport too. Just enough
-       * to deepen the corners and stop the photo's brightest highlight
-       * areas from fighting the glass cards. */}
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 z-[1]"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(6,8,10,0.15) 0%, rgba(6,8,10,0.45) 60%, rgba(6,8,10,0.70) 100%)",
+            "radial-gradient(ellipse at center, rgba(6,8,10,0.18) 0%, rgba(6,8,10,0.48) 60%, rgba(6,8,10,0.72) 100%)",
         }}
       />
 
-      <div className="relative z-10">
+      {/* TopNav lives outside the scroll container so it stays
+       * anchored to the top of the viewport across snaps. */}
+      <div className="fixed inset-x-0 top-0 z-30">
         <TopNav />
+      </div>
+
+      <div className="relative z-10 h-full snap-y snap-mandatory overflow-y-auto overflow-x-hidden">
 
         {/* ---------------------------------------------------------- */}
         {/* Hero                                                       */}
         {/* ---------------------------------------------------------- */}
-        <section className="relative flex min-h-screen items-center px-6 pb-24 pt-40 sm:px-12 sm:pb-32 sm:pt-44 md:px-20 lg:px-28">
-          {/* Hero-only darkening gradient that SCROLLS with the
-           * section. The fixed photo behind shows through; this just
-           * deepens the left side where the headline sits so the
-           * type reads against a bright sky. Once you scroll past the
-           * hero, this gradient is gone and the form/details
-           * sections take over with their own backdrop-blur cards. */}
+        <section className="relative flex h-screen snap-start items-center px-6 pb-24 pt-40 sm:px-12 sm:pb-32 sm:pt-44 md:px-20 lg:px-28">
+          {/* Hero-only darkening gradient that snaps with the
+           * section. Deepens the left side where the headline sits
+           * so the type reads against the bright sky in the photo
+           * beneath. */}
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 z-0"
@@ -192,9 +196,9 @@ export default function FoundersHikePage() {
         {/* ---------------------------------------------------------- */}
         <section
           id="details"
-          className="border-t border-white/[0.06] bg-[#06080a]/55 px-6 py-24 backdrop-blur-sm sm:px-12 sm:py-32 md:px-20 lg:px-28"
+          className="relative flex h-screen snap-start items-center bg-[#06080a]/55 px-6 backdrop-blur-sm sm:px-12 md:px-20 lg:px-28"
         >
-          <div className="w-full max-w-5xl">
+          <div className="w-full max-w-5xl pt-24 sm:pt-16">
             <p className="font-sans text-[11px] font-medium uppercase tracking-[0.32em] text-neutral-300/80 sm:text-[12px]">
               The details
             </p>
@@ -230,9 +234,9 @@ export default function FoundersHikePage() {
         {/* ---------------------------------------------------------- */}
         <section
           id="signup"
-          className="border-t border-white/[0.06] bg-[#06080a]/55 px-6 py-24 backdrop-blur-sm sm:px-12 sm:py-32 md:px-20 lg:px-28"
+          className="relative flex h-screen snap-start items-center bg-[#06080a]/55 px-6 backdrop-blur-sm sm:px-12 md:px-20 lg:px-28"
         >
-          <div className="w-full max-w-3xl">
+          <div className="w-full max-w-3xl pt-24 sm:pt-16">
             <p className="font-sans text-[11px] font-medium uppercase tracking-[0.32em] text-neutral-300/80 sm:text-[12px]">
               Sign up
             </p>
@@ -343,8 +347,8 @@ export default function FoundersHikePage() {
         {/* ---------------------------------------------------------- */}
         {/* Closing                                                    */}
         {/* ---------------------------------------------------------- */}
-        <section className="border-t border-white/[0.06] bg-[#06080a]/55 px-6 py-24 backdrop-blur-sm sm:px-12 sm:py-28 md:px-20 lg:px-28">
-          <div className="w-full max-w-5xl">
+        <section className="relative flex h-screen snap-start items-center bg-[#06080a]/55 px-6 backdrop-blur-sm sm:px-12 md:px-20 lg:px-28">
+          <div className="w-full max-w-5xl pt-24 sm:pt-16">
             <h2 className="hero-text text-4xl italic leading-[1.05] text-neutral-50 sm:text-5xl md:text-6xl">
               Bring someone who builds.
             </h2>
