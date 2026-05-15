@@ -20,10 +20,52 @@
  * stacks, max one sentence under five words (the closing CTA).
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { TopNav } from "../components/top-nav";
+
+/**
+ * RiseObserver
+ *
+ * Watches every `.rise-on-scroll` element on the page and adds the
+ * `.rise-on-scroll--visible` modifier the first time it crosses
+ * into view. CSS handles the actual animation (translateY 48px → 0
+ * with a soft opacity ramp). Once visible, the element is unobserved
+ * so the animation only runs once per element.
+ *
+ * Lives at the page level so any descendant section's content block
+ * gets the rise effect just by adding the class.
+ */
+function RiseObserver() {
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // Skip the animation entirely for reduced-motion users; jump
+      // straight to the resting state so they see content normally.
+      document
+        .querySelectorAll<HTMLElement>(".rise-on-scroll")
+        .forEach((el) => el.classList.add("rise-on-scroll--visible"));
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("rise-on-scroll--visible");
+            observer.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+    );
+    document
+      .querySelectorAll<HTMLElement>(".rise-on-scroll")
+      .forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+  return null;
+}
 
 /**
  * No WebGL orb on this page: the live shader background was bricking
@@ -105,16 +147,14 @@ export default function FoundersHikePage() {
 
   return (
     /*
-     * Single-viewport "scroll-snap" layout. The page itself doesn't
-     * scroll — body is locked at 100vh, overflow hidden. The fixed
-     * Torrey Pines photo + the page vignette are anchored to the
-     * viewport and never move. Inside, a snap-mandatory scroll
-     * container holds the four content sections, each sized to one
-     * viewport. As you wheel/swipe, each section snaps into place
-     * over the photo and the previous one slides off the top — the
-     * "text comes up over a still background" effect.
+     * Fixed-photo parallax. The Torrey Pines aerial + the page
+     * vignette are anchored to the viewport via position: fixed and
+     * never move. The page itself scrolls normally; each section is
+     * marked with .rise-on-scroll and animates from translateY(48px)
+     * + opacity 0 the first time it crosses into view, so the text
+     * literally "rises up" over the fixed photo as the user scrolls.
      */
-    <main className="relative h-screen overflow-hidden bg-[#06080a] text-neutral-100">
+    <main className="relative min-h-screen bg-[#06080a] text-neutral-100">
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 z-0"
@@ -134,18 +174,15 @@ export default function FoundersHikePage() {
         }}
       />
 
-      {/* TopNav lives outside the scroll container so it stays
-       * anchored to the top of the viewport across snaps. */}
-      <div className="fixed inset-x-0 top-0 z-30">
-        <TopNav />
-      </div>
+      <RiseObserver />
 
-      <div className="relative z-10 h-full snap-y snap-mandatory overflow-y-auto overflow-x-hidden">
+      <div className="relative z-10">
+        <TopNav />
 
         {/* ---------------------------------------------------------- */}
         {/* Hero                                                       */}
         {/* ---------------------------------------------------------- */}
-        <section className="relative flex h-screen snap-start items-center px-6 pb-24 pt-40 sm:px-12 sm:pb-32 sm:pt-44 md:px-20 lg:px-28">
+        <section className="relative flex min-h-screen items-center px-6 pb-24 pt-40 sm:px-12 sm:pb-32 sm:pt-44 md:px-20 lg:px-28">
           {/* Hero-only darkening gradient that snaps with the
            * section. Deepens the left side where the headline sits
            * so the type reads against the bright sky in the photo
@@ -159,7 +196,7 @@ export default function FoundersHikePage() {
             }}
           />
 
-          <div className="relative z-[2] flex w-full max-w-5xl flex-col gap-7 sm:gap-9">
+          <div className="rise-on-scroll relative z-[2] flex w-full max-w-5xl flex-col gap-7 sm:gap-9">
             <p className="font-sans text-[11px] font-medium uppercase tracking-[0.32em] text-neutral-300/80 sm:text-[12px]">
               The Founders&apos; Hike
               <span className="mx-2 text-neutral-500">·</span>
@@ -196,9 +233,9 @@ export default function FoundersHikePage() {
         {/* ---------------------------------------------------------- */}
         <section
           id="details"
-          className="relative flex h-screen snap-start items-center bg-[#06080a]/55 px-6 backdrop-blur-sm sm:px-12 md:px-20 lg:px-28"
+          className="relative flex min-h-screen items-center bg-[#06080a]/55 px-6 py-24 backdrop-blur-sm sm:px-12 sm:py-32 md:px-20 lg:px-28"
         >
-          <div className="w-full max-w-5xl pt-24 sm:pt-16">
+          <div className="rise-on-scroll w-full max-w-5xl">
             <p className="font-sans text-[11px] font-medium uppercase tracking-[0.32em] text-neutral-300/80 sm:text-[12px]">
               The details
             </p>
@@ -234,9 +271,9 @@ export default function FoundersHikePage() {
         {/* ---------------------------------------------------------- */}
         <section
           id="signup"
-          className="relative flex h-screen snap-start items-center bg-[#06080a]/55 px-6 backdrop-blur-sm sm:px-12 md:px-20 lg:px-28"
+          className="relative flex min-h-screen items-center bg-[#06080a]/55 px-6 py-24 backdrop-blur-sm sm:px-12 sm:py-32 md:px-20 lg:px-28"
         >
-          <div className="w-full max-w-3xl pt-24 sm:pt-16">
+          <div className="rise-on-scroll w-full max-w-3xl">
             <p className="font-sans text-[11px] font-medium uppercase tracking-[0.32em] text-neutral-300/80 sm:text-[12px]">
               Sign up
             </p>
@@ -347,8 +384,8 @@ export default function FoundersHikePage() {
         {/* ---------------------------------------------------------- */}
         {/* Closing                                                    */}
         {/* ---------------------------------------------------------- */}
-        <section className="relative flex h-screen snap-start items-center bg-[#06080a]/55 px-6 backdrop-blur-sm sm:px-12 md:px-20 lg:px-28">
-          <div className="w-full max-w-5xl pt-24 sm:pt-16">
+        <section className="relative flex min-h-screen items-center bg-[#06080a]/55 px-6 py-24 backdrop-blur-sm sm:px-12 sm:py-28 md:px-20 lg:px-28">
+          <div className="rise-on-scroll w-full max-w-5xl">
             <h2 className="hero-text text-4xl italic leading-[1.05] text-neutral-50 sm:text-5xl md:text-6xl">
               Bring someone who builds.
             </h2>
