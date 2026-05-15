@@ -29,6 +29,36 @@ export function Hero() {
           Explore the Network
         </a>
       </div>
+
+      {/*
+       * Floating Founders' Hike popup. Sits bottom-centre under the
+       * hero's primary CTAs, slowly pulsing so the eye finds it
+       * without it crowding the brand line. Dismissible would be nice
+       * later; for now it stays so every visitor sees it.
+       */}
+      <a
+        href="/founders-hike"
+        className="hike-popup glass-pill pointer-events-auto mt-10 inline-flex items-center gap-3 rounded-full px-5 py-2.5 text-left transition hover:text-white sm:mt-14"
+      >
+        <span
+          aria-hidden="true"
+          className="hike-popup-dot inline-block h-2 w-2 rounded-full bg-emerald-300"
+        />
+        <span className="flex flex-col leading-tight">
+          <span className="text-[9px] font-medium uppercase tracking-[0.3em] text-neutral-300/85 sm:text-[10px]">
+            New
+          </span>
+          <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-50 sm:text-[12px]">
+            The Founders&apos; Hike at Torrey Pines
+          </span>
+        </span>
+        <span
+          aria-hidden="true"
+          className="text-[14px] text-neutral-300 sm:text-[16px]"
+        >
+          →
+        </span>
+      </a>
     </div>
   );
 }
