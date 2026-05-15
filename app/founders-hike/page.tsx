@@ -20,22 +20,19 @@
  * stacks, max one sentence under five words (the closing CTA).
  */
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import * as THREE from "three";
 
 import { TopNav } from "../components/top-nav";
-import { OrbBackground } from "../components/orb-background";
-import { type PaletteUniforms } from "../components/fluid-orb";
-import { hexToLinearRGB } from "../lib/color-schemes";
 
-const PALETTE_HEX = {
-  c0: "#080907",
-  c1: "#1f2121",
-  c2: "#6d7677",
-  c3: "#e0ddce",
-  accent: "#252220",
-} as const;
+/**
+ * No WebGL orb on this page: the live shader background was bricking
+ * loads on lower-powered laptops, and the hero already carries the
+ * page's visual identity via the Torrey Pines aerial photograph. The
+ * sections below get a static gradient + grain pattern instead, which
+ * runs on anything with a browser. Brand atmosphere comes from the
+ * locked palette tones in the gradient stops below.
+ */
 
 interface DetailItem {
   label: string;
@@ -72,17 +69,6 @@ const EMPTY_FORM: FormState = { name: "", email: "", phone: "" };
 type Status = "idle" | "submitting" | "success" | "error";
 
 export default function FoundersHikePage() {
-  const paletteUniforms = useMemo<PaletteUniforms>(() => {
-    const v = (h: string) => new THREE.Vector3(...hexToLinearRGB(h));
-    return {
-      uColor0: { value: v(PALETTE_HEX.c0) },
-      uColor1: { value: v(PALETTE_HEX.c1) },
-      uColor2: { value: v(PALETTE_HEX.c2) },
-      uColor3: { value: v(PALETTE_HEX.c3) },
-      uAccent: { value: v(PALETTE_HEX.accent) },
-    };
-  }, []);
-
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -119,11 +105,20 @@ export default function FoundersHikePage() {
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#06080a] text-neutral-100">
-      {/* Full-page orb canvas. Visible behind the sections below the
-       * hero (through their backdrop-blur), hidden by the photo in
-       * the hero itself. */}
-      <div className="absolute inset-0 z-0">
-        <OrbBackground paletteUniforms={paletteUniforms} />
+      {/* Full-page static background: cool charcoal radial gradients
+       * plus the grain stack. Tuned to the locked Bone/Glacier palette
+       * so it reads as the same family as the rest of the site, just
+       * without the WebGL cost. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 80% 60% at 25% 15%, rgba(80, 92, 102, 0.32) 0%, transparent 58%), radial-gradient(ellipse 80% 60% at 78% 82%, rgba(42, 52, 60, 0.28) 0%, transparent 58%), radial-gradient(ellipse at 50% 50%, #13171a 0%, #08090c 60%, #050608 100%)",
+          }}
+        />
+        <div className="grain-coarse" />
+        <div className="grain" />
       </div>
 
       <div className="relative z-10">
