@@ -119,35 +119,12 @@ export default function FoundersHikePage() {
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#06080a] text-neutral-100">
-      {/* Layer 1: live orb canvas. */}
+      {/* Full-page orb canvas. Visible behind the sections below the
+       * hero (through their backdrop-blur), hidden by the photo in
+       * the hero itself. */}
       <div className="absolute inset-0 z-0">
         <OrbBackground paletteUniforms={paletteUniforms} />
       </div>
-
-      {/* Layer 2: Torrey Pines aerial photograph (when present at
-       * /public/founders-hike-torrey-pines.jpg). Blended via screen-
-       * style mixing so the brand orb stays present beneath. */}
-      <div
-        className="pointer-events-none absolute inset-0 z-[2]"
-        style={{
-          backgroundImage:
-            "url('/founders-hike-torrey-pines.jpg'), linear-gradient(to bottom, rgba(190, 165, 130, 0.35) 0%, rgba(120, 130, 140, 0.32) 38%, rgba(40, 70, 95, 0.45) 70%, rgba(15, 30, 45, 0.55) 100%)",
-          backgroundSize: "cover, cover",
-          backgroundPosition: "center, center",
-          backgroundRepeat: "no-repeat, no-repeat",
-          opacity: 0.55,
-          mixBlendMode: "soft-light",
-        }}
-      />
-
-      {/* Layer 3: darkening vignette so content stays readable. */}
-      <div
-        className="pointer-events-none absolute inset-0 z-[5]"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, rgba(6,8,10,0.40) 0%, rgba(6,8,10,0.60) 60%, rgba(6,8,10,0.80) 100%)",
-        }}
-      />
 
       <div className="relative z-10">
         <TopNav />
@@ -155,8 +132,44 @@ export default function FoundersHikePage() {
         {/* ---------------------------------------------------------- */}
         {/* Hero                                                       */}
         {/* ---------------------------------------------------------- */}
-        <section className="flex min-h-screen items-center px-6 pb-24 pt-40 sm:px-12 sm:pb-32 sm:pt-44 md:px-20 lg:px-28">
-          <div className="flex w-full max-w-5xl flex-col gap-7 sm:gap-9">
+        <section className="relative flex min-h-screen items-center px-6 pb-24 pt-40 sm:px-12 sm:pb-32 sm:pt-44 md:px-20 lg:px-28">
+          {/* The Torrey Pines aerial sits as the hero's primary
+           * background at full opacity, scoped to the hero section so
+           * it doesn't bleed into the form / details sections below. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-0"
+            style={{
+              backgroundImage:
+                "url('/founders-hike-torrey-pines.jpg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
+          />
+          {/* Left-leaning gradient over the photo: heavy darkening
+           * where the headline sits, fading to almost-clear on the
+           * right so the photograph reads. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-[1]"
+            style={{
+              background:
+                "linear-gradient(100deg, rgba(6,8,10,0.82) 0%, rgba(6,8,10,0.62) 32%, rgba(6,8,10,0.30) 62%, rgba(6,8,10,0.18) 100%)",
+            }}
+          />
+          {/* Soft top/bottom vignette so the nav and CTA controls
+           * don't sit on hot photo highlights. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-[1]"
+            style={{
+              background:
+                "linear-gradient(to bottom, rgba(6,8,10,0.45) 0%, transparent 22%, transparent 78%, rgba(6,8,10,0.55) 100%)",
+            }}
+          />
+
+          <div className="relative z-[2] flex w-full max-w-5xl flex-col gap-7 sm:gap-9">
             <p className="font-sans text-[11px] font-medium uppercase tracking-[0.32em] text-neutral-300/80 sm:text-[12px]">
               The Founders&apos; Hike
               <span className="mx-2 text-neutral-500">·</span>
