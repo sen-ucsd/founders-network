@@ -20,7 +20,7 @@
  * stacks, max one sentence under five words (the closing CTA).
  */
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 import { TopNav } from "../components/top-nav";
@@ -70,6 +70,58 @@ type Status = "idle" | "submitting" | "success" | "error";
 
 export default function FoundersHikePage() {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
+
+  /* Cursor-driven parallax on the Torrey Pines hero photo. The photo
+   * div is oversized (inset: -8%) so it has slack to slide without
+   * exposing the section's edges. A requestAnimationFrame loop eases
+   * the current offset toward the cursor's normalized position, then
+   * writes a translate3d directly to the DOM node. No React state in
+   * the hot path so there's no re-render cost. The RAF self-cancels
+   * once the offset has caught up to the target. */
+  const photoRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let raf: number | null = null;
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    const apply = () => {
+      const el = photoRef.current;
+      if (!el) return;
+      const tx = -currentX * 4.5;
+      const ty = -currentY * 4.5;
+      el.style.transform = `translate3d(${tx.toFixed(3)}%, ${ty.toFixed(3)}%, 0)`;
+    };
+
+    const tick = () => {
+      const dx = targetX - currentX;
+      const dy = targetY - currentY;
+      if (Math.abs(dx) < 0.0008 && Math.abs(dy) < 0.0008) {
+        raf = null;
+        return;
+      }
+      currentX += dx * 0.08;
+      currentY += dy * 0.08;
+      apply();
+      raf = requestAnimationFrame(tick);
+    };
+
+    const onMove = (e: PointerEvent) => {
+      targetX = (e.clientX / window.innerWidth) * 2 - 1;
+      targetY = (e.clientY / window.innerHeight) * 2 - 1;
+      if (raf === null) raf = requestAnimationFrame(tick);
+    };
+
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      if (raf !== null) cancelAnimationFrame(raf);
+    };
+  }, []);
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -128,18 +180,26 @@ export default function FoundersHikePage() {
         {/* Hero                                                       */}
         {/* ---------------------------------------------------------- */}
         <section className="relative flex min-h-screen items-center px-6 pb-24 pt-40 sm:px-12 sm:pb-32 sm:pt-44 md:px-20 lg:px-28">
-          {/* The Torrey Pines aerial sits as the hero's primary
-           * background at full opacity, scoped to the hero section so
-           * it doesn't bleed into the form / details sections below. */}
+          {/* Torrey Pines aerial as the hero's primary background.
+           * Sized 8% larger than the section on every side so the
+           * cursor-driven parallax in the useEffect above has slack
+           * to translate without ever exposing the section edges.
+           * The translate is written directly to this element's
+           * inline transform via requestAnimationFrame. */}
           <div
+            ref={photoRef}
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 z-0"
+            className="pointer-events-none absolute z-0 will-change-transform"
             style={{
-              backgroundImage:
-                "url('/founders-hike-torrey-pines.jpg')",
+              top: "-8%",
+              left: "-8%",
+              right: "-8%",
+              bottom: "-8%",
+              backgroundImage: "url('/founders-hike-torrey-pines.jpg')",
               backgroundSize: "cover",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
+              transform: "translate3d(0, 0, 0)",
             }}
           />
           {/* Left-leaning gradient over the photo: heavy darkening
