@@ -233,9 +233,9 @@ export default function FoundersHikePage() {
         {/* ---------------------------------------------------------- */}
         <section
           id="details"
-          className="relative flex min-h-screen items-center bg-[#06080a]/55 px-6 py-24 backdrop-blur-sm sm:px-12 sm:py-32 md:px-20 lg:px-28"
+          className="relative bg-[#06080a]/65 px-6 py-14 sm:px-12 sm:py-20 md:px-20 lg:px-28"
         >
-          <div className="rise-on-scroll w-full max-w-5xl">
+          <div className="rise-on-scroll mx-auto w-full max-w-5xl">
             <p className="font-sans text-[11px] font-medium uppercase tracking-[0.32em] text-neutral-300/80 sm:text-[12px]">
               The details
             </p>
@@ -271,9 +271,9 @@ export default function FoundersHikePage() {
         {/* ---------------------------------------------------------- */}
         <section
           id="signup"
-          className="relative flex min-h-screen items-center bg-[#06080a]/55 px-6 py-24 backdrop-blur-sm sm:px-12 sm:py-32 md:px-20 lg:px-28"
+          className="relative bg-[#06080a]/65 px-6 py-14 sm:px-12 sm:py-20 md:px-20 lg:px-28"
         >
-          <div className="rise-on-scroll w-full max-w-3xl">
+          <div className="rise-on-scroll mx-auto w-full max-w-3xl">
             <p className="font-sans text-[11px] font-medium uppercase tracking-[0.32em] text-neutral-300/80 sm:text-[12px]">
               Sign up
             </p>
@@ -384,8 +384,8 @@ export default function FoundersHikePage() {
         {/* ---------------------------------------------------------- */}
         {/* Closing                                                    */}
         {/* ---------------------------------------------------------- */}
-        <section className="relative flex min-h-screen items-center bg-[#06080a]/55 px-6 py-24 backdrop-blur-sm sm:px-12 sm:py-28 md:px-20 lg:px-28">
-          <div className="rise-on-scroll w-full max-w-5xl">
+        <section className="relative bg-[#06080a]/65 px-6 py-14 sm:px-12 sm:py-20 md:px-20 lg:px-28">
+          <div className="rise-on-scroll mx-auto w-full max-w-5xl">
             <h2 className="hero-text text-4xl italic leading-[1.05] text-neutral-50 sm:text-5xl md:text-6xl">
               Bring someone who builds.
             </h2>
