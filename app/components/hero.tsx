@@ -31,34 +31,44 @@ export function Hero() {
       </div>
 
       {/*
-       * Floating Founders' Hike popup. Sits bottom-centre under the
-       * hero's primary CTAs, slowly pulsing so the eye finds it
-       * without it crowding the brand line. Dismissible would be nice
-       * later; for now it stays so every visitor sees it.
+       * Floating event pills beneath the primary CTAs. Each one fades
+       * in 800ms after page load with a slow-pulsing dot so the eye
+       * finds them without them competing with the brand line.
        */}
-      <a
-        href="/founders-hike"
-        className="hike-popup glass-pill pointer-events-auto mt-10 inline-flex items-center gap-3 rounded-full px-5 py-2.5 text-left transition hover:text-white sm:mt-14"
-      >
-        <span
-          aria-hidden="true"
-          className="hike-popup-dot inline-block h-2 w-2 rounded-full bg-emerald-300"
-        />
-        <span className="flex flex-col leading-tight">
-          <span className="text-[9px] font-medium uppercase tracking-[0.3em] text-neutral-300/85 sm:text-[10px]">
-            New
-          </span>
-          <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-50 sm:text-[12px]">
-            The Founders&apos; Hike at Torrey Pines
-          </span>
-        </span>
-        <span
-          aria-hidden="true"
-          className="text-[14px] text-neutral-300 sm:text-[16px]"
+      <div className="pointer-events-auto mt-10 flex flex-col items-stretch gap-2.5 sm:mt-14 sm:flex-row sm:items-center sm:gap-3">
+        <a
+          href="/founders-hike"
+          className="hike-popup glass-pill inline-flex items-center gap-2.5 rounded-full px-5 py-2.5 text-left transition hover:text-white"
         >
-          →
-        </span>
-      </a>
+          <span
+            aria-hidden="true"
+            className="hike-popup-dot inline-block h-2 w-2 rounded-full bg-emerald-300"
+          />
+          <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-50 sm:text-[12px]">
+            Founders&apos; Hike{" "}
+            <span className="text-neutral-500">·</span> Torrey Pines
+          </span>
+          <span aria-hidden="true" className="text-[14px] text-neutral-300">
+            →
+          </span>
+        </a>
+        <a
+          href="/workshops/claude"
+          className="hike-popup glass-pill inline-flex items-center gap-2.5 rounded-full px-5 py-2.5 text-left transition hover:text-white"
+        >
+          <span
+            aria-hidden="true"
+            className="hike-popup-dot inline-block h-2 w-2 rounded-full bg-amber-300"
+          />
+          <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-50 sm:text-[12px]">
+            Workshop <span className="text-neutral-500">·</span> Build with
+            Claude
+          </span>
+          <span aria-hidden="true" className="text-[14px] text-neutral-300">
+            →
+          </span>
+        </a>
+      </div>
     </div>
   );
 }

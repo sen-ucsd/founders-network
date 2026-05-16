@@ -1,17 +1,21 @@
 "use client";
 
 /**
- * /workshops/claude — landing + signup for the Claude workshop the
- * chapter is running. Mirrors the /founders-hike pattern (hero,
- * agenda cards, three-field signup form, closing CTA) but skips the
- * location photo since there isn't a place this lives at. Background
- * is a static gradient + grain stack so the page loads on anything.
+ * /workshops/claude — landing + signup for the Claude workshop.
  *
- * Submissions POST to /api/workshop which inserts into the Supabase
- * `workshop_signups` table.
+ * No location photo (this isn't a place); the hero leans on
+ * typography. Italic emphasis on "Claude" gives the headline a
+ * visual hook that distinguishes the page from the other event
+ * landings without introducing new visual machinery.
  *
- * Voice rules: no em dashes, no "not X but Y", no staccato fragment
- * stacks, max one sentence under five words.
+ * Background is the static gradient + grain stack (same as /apply
+ * and the non-hero sections of /founders-hike) so the page loads on
+ * anything with a browser.
+ *
+ * Submissions POST to /api/workshop → Supabase `workshop_signups`.
+ *
+ * Voice rules: no em dashes, no "not X but Y", flowing prose, max
+ * one sentence under five words ("Build with Claude." reserved).
  */
 
 import { useState } from "react";
@@ -27,19 +31,19 @@ interface AgendaItem {
 const AGENDA: AgendaItem[] = [
   {
     label: "Claude, the model",
-    body: "How to actually prompt, when to lean on tool use, vision, and the parts of the model that aren't obvious from the marketing page.",
+    body: "Prompting, tool use, vision, and what the marketing page leaves out.",
   },
   {
     label: "Claude Code",
-    body: "The terminal-based coding agent that ships work while you go grab lunch. Setup, hooks, MCP, and the agentic patterns that compound.",
+    body: "The terminal agent that ships while you eat lunch. Setup, hooks, MCP.",
   },
   {
     label: "Real workflows",
-    body: "How operators on the team are using Claude day to day, with examples pulled from projects shipping right now in the chapter.",
+    body: "How the team uses Claude day-to-day, with live examples from shipping projects.",
   },
   {
     label: "Bring a project",
-    body: "Open laptops, hands on real work. By the end you will have moved something forward instead of leaving with notes you never look at.",
+    body: "Open laptops, real work. You leave with something of yours moved forward.",
   },
 ];
 
@@ -90,15 +94,12 @@ export default function ClaudeWorkshopPage() {
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#06080a] text-neutral-100">
-      {/* Static brand background: cool charcoal radial gradients plus
-       * the grain stack. Same lightweight pattern /apply uses so the
-       * page loads on any device with no GPU work. */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 80% 60% at 22% 18%, rgba(82, 96, 108, 0.34) 0%, transparent 58%), radial-gradient(ellipse 80% 60% at 78% 82%, rgba(44, 52, 60, 0.30) 0%, transparent 58%), radial-gradient(ellipse at 50% 50%, #13171a 0%, #08090c 60%, #050608 100%)",
+              "radial-gradient(ellipse 82% 60% at 20% 18%, rgba(82, 96, 108, 0.36) 0%, transparent 60%), radial-gradient(ellipse 82% 60% at 80% 84%, rgba(44, 52, 60, 0.30) 0%, transparent 60%), radial-gradient(ellipse at 50% 50%, #13171a 0%, #08090c 60%, #050608 100%)",
           }}
         />
         <div className="grain-coarse" />
@@ -111,29 +112,26 @@ export default function ClaudeWorkshopPage() {
         {/* ---------------------------------------------------------- */}
         {/* Hero                                                       */}
         {/* ---------------------------------------------------------- */}
-        <section className="flex min-h-screen items-center px-6 pb-24 pt-40 sm:px-12 sm:pb-32 sm:pt-44 md:px-20 lg:px-28">
-          <div className="flex w-full max-w-5xl flex-col gap-7 sm:gap-9">
+        <section className="flex min-h-screen items-center px-6 pb-20 pt-36 sm:px-12 sm:pb-28 sm:pt-44 md:px-20 lg:px-28">
+          <div className="flex w-full max-w-5xl flex-col gap-6 sm:gap-8">
             <p className="font-sans text-[11px] font-medium uppercase tracking-[0.32em] text-neutral-300/80 sm:text-[12px]">
               Workshop
               <span className="mx-2 text-neutral-500">·</span>
               Claude &amp; Claude Code
             </p>
-            <h1 className="hero-text text-[44px] italic leading-[0.98] text-neutral-50 drop-shadow-[0_2px_30px_rgba(0,0,0,0.55)] sm:text-[80px] md:text-[108px] lg:text-[128px]">
-              Build with Claude.
+            <h1 className="hero-text text-[52px] leading-[0.96] text-neutral-50 drop-shadow-[0_2px_30px_rgba(0,0,0,0.55)] sm:text-[88px] md:text-[120px] lg:text-[140px]">
+              Build with <span className="italic">Claude.</span>
             </h1>
-            <p className="font-sans max-w-3xl text-lg leading-[1.55] text-neutral-200 sm:text-xl">
-              A hands-on session on Claude and Claude Code, the chat
-              interface and the terminal-based coding agent. By the end
-              you will have moved a real project forward and seen the
-              workflows the team is using to ship more in a week than
-              they used to in a month.
+            <p className="font-sans max-w-2xl text-lg leading-[1.55] text-neutral-200 sm:text-xl">
+              Hands-on with the model and the terminal agent. You move a real
+              project forward and see how the team is shipping with Claude.
             </p>
-            <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4">
+            <div className="flex flex-col items-stretch gap-3 pt-2 sm:flex-row sm:items-center sm:gap-4">
               <a
                 href="#signup"
                 className="glass-cta-light rounded-full px-6 py-2.5 text-center text-xs font-semibold uppercase tracking-[0.2em] text-neutral-900"
               >
-                Save your spot
+                Save your seat
               </a>
               <a
                 href="#agenda"
@@ -156,14 +154,13 @@ export default function ClaudeWorkshopPage() {
             <p className="font-sans text-[11px] font-medium uppercase tracking-[0.32em] text-neutral-300/80 sm:text-[12px]">
               The agenda
             </p>
-            <h2 className="hero-text mt-6 text-4xl italic leading-[1.05] text-neutral-50 sm:text-5xl md:text-6xl">
-              What we are covering.
+            <h2 className="hero-text mt-5 text-4xl italic leading-[1.05] text-neutral-50 sm:text-5xl md:text-6xl">
+              What we&apos;re working through.
             </h2>
-            <p className="font-sans mt-5 max-w-2xl text-base leading-relaxed text-neutral-300 sm:text-lg">
-              Four blocks, weighted toward hands-on time on a project of
-              your own.
+            <p className="font-sans mt-4 max-w-xl text-base leading-relaxed text-neutral-300 sm:text-lg">
+              Four blocks, weighted toward hands-on work.
             </p>
-            <div className="mt-10 grid gap-3 sm:grid-cols-2">
+            <div className="mt-9 grid gap-3 sm:grid-cols-2">
               {AGENDA.map((item) => (
                 <div
                   key={item.label}
@@ -198,16 +195,16 @@ export default function ClaudeWorkshopPage() {
             <p className="font-sans text-[11px] font-medium uppercase tracking-[0.32em] text-neutral-300/80 sm:text-[12px]">
               Sign up
             </p>
-            <h2 className="hero-text mt-6 text-4xl italic leading-[1.05] text-neutral-50 sm:text-5xl md:text-6xl">
-              Save your seat.
+            <h2 className="hero-text mt-5 text-4xl italic leading-[1.05] text-neutral-50 sm:text-5xl md:text-6xl">
+              Save your seat in the room.
             </h2>
-            <p className="font-sans mt-5 max-w-2xl text-base leading-relaxed text-neutral-300 sm:text-lg">
-              Three fields, no friction. We will email you the venue and
-              the exact date once they are pinned.
+            <p className="font-sans mt-4 max-w-xl text-base leading-relaxed text-neutral-300 sm:text-lg">
+              Three fields and we&apos;ll email the venue and date the moment
+              they lock in.
             </p>
 
             {status === "success" ? (
-              <div className="glass-card mt-10 flex flex-col gap-3 p-6 sm:p-8">
+              <div className="glass-card mt-8 flex flex-col gap-3 p-6 sm:p-8">
                 <p className="font-sans text-[10px] font-medium uppercase tracking-[0.28em] text-neutral-300/85">
                   You&apos;re in
                 </p>
@@ -215,20 +212,20 @@ export default function ClaudeWorkshopPage() {
                   See you in the room.
                 </h3>
                 <p className="text-sm leading-relaxed text-neutral-300 sm:text-[15px]">
-                  Look out for an email from the chapter once the date
-                  and venue are set. Bring a laptop and a project that
-                  needs a push.
+                  Watch for an email once the date and venue are set. Bring
+                  a laptop and a project that needs a push.
                 </p>
               </div>
             ) : (
               <form
                 onSubmit={onSubmit}
-                className="mt-10 flex flex-col gap-5"
+                className="mt-8 flex flex-col gap-5"
                 noValidate
               >
                 <label className="flex flex-col gap-2">
                   <span className="text-[10px] font-medium uppercase tracking-[0.28em] text-neutral-300/85">
-                    Name <span className="ml-1 text-neutral-500">· required</span>
+                    Name{" "}
+                    <span className="ml-1 text-neutral-500">· required</span>
                   </span>
                   <input
                     type="text"
@@ -283,7 +280,7 @@ export default function ClaudeWorkshopPage() {
                   </div>
                 ) : null}
 
-                <div className="mt-2 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-6">
+                <div className="mt-1 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-6">
                   <button
                     type="submit"
                     disabled={!valid || status === "submitting"}
@@ -306,15 +303,13 @@ export default function ClaudeWorkshopPage() {
         <section className="relative bg-[#06080a]/65 px-6 py-14 sm:px-12 sm:py-20 md:px-20 lg:px-28">
           <div className="mx-auto w-full max-w-5xl">
             <h2 className="hero-text text-4xl italic leading-[1.05] text-neutral-50 sm:text-5xl md:text-6xl">
-              Bring a builder.
+              Forward this to a builder.
             </h2>
-            <p className="font-sans mt-6 max-w-2xl text-base leading-relaxed text-neutral-300 sm:text-lg">
-              The room is open to UCSD students first, and to the
-              surrounding founder community as space allows. Forward
-              this page to anyone in your circle who has been meaning
-              to figure this out properly.
+            <p className="font-sans mt-5 max-w-xl text-base leading-relaxed text-neutral-300 sm:text-lg">
+              Open to UCSD students first, then the surrounding founder
+              community as space allows.
             </p>
-            <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4">
+            <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4">
               <Link
                 href="/"
                 className="glass-pill rounded-full px-5 py-2.5 text-center text-xs font-medium uppercase tracking-[0.22em] text-neutral-100 transition hover:text-white"
