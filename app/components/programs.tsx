@@ -1,6 +1,8 @@
 /**
- * Programs section — verbatim SEN program descriptions, headline,
- * and subline. Sits below Chapters in the long landing.
+ * Programs section. Three programs UCSD's chapter actually runs.
+ * Inter-Chapter Exchange dropped along with the broader chapter
+ * model; Capital Connections rephrased away from "each chapter's
+ * region" to the San Diego area.
  */
 
 interface Program {
@@ -18,12 +20,8 @@ const PROGRAMS: Program[] = [
     body: "Off-the-record talks with operators and investors who answer the questions you would never ask on a public stage.",
   },
   {
-    title: "Inter-Chapter Exchange",
-    body: "Members spend a week working out of another chapter's city. Crash with the local team. Build alongside them.",
-  },
-  {
     title: "Capital Connections",
-    body: "Warm intros to the angels, funds, and accelerators in each chapter's region for projects that show real traction.",
+    body: "Warm intros to angels, funds, and accelerators around San Diego for projects that show real traction.",
   },
 ];
 
@@ -39,12 +37,12 @@ export function Programs() {
             The infrastructure for impact.
           </h2>
           <p className="mt-5 text-base leading-relaxed text-neutral-300 sm:text-lg">
-            Every chapter runs the same four programs, designed to compound
-            the work members do on their own products and on each other&apos;s.
+            Three programs designed to compound the work members do on
+            their own products and on each other&apos;s.
           </p>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-3">
           {PROGRAMS.map((p) => (
             <div
               key={p.title}

@@ -3,10 +3,8 @@ import { FluidOrbHero } from "./components/fluid-orb-hero";
 import { Hero } from "./components/hero";
 import { CircularBadge } from "./components/circular-badge";
 import { Mission } from "./components/mission";
-import { Chapters } from "./components/chapters";
 import { Programs } from "./components/programs";
 import { Partners } from "./components/partners";
-import { StartChapter } from "./components/start-chapter";
 
 export default function Home() {
   return (
@@ -18,16 +16,14 @@ export default function Home() {
         <CircularBadge />
       </section>
 
-      {/* Order mirrors SEN's homepage flow:
-       *   Vision → Chapters → Programs → (FN-only) Coalition → Start a Chapter
-       * The Coalition section is the FN-specific UCSD-internal coalition
-       * of partner orgs, distinct from "chapters" (geographic nodes).
+      {/*
+       * Vision → Programs → Coalition. The Chapters and Start-a-Chapter
+       * sections are gone with the chapter-expansion narrative; FN is
+       * UCSD-only now.
        */}
       <Mission />
-      <Chapters />
       <Programs />
       <Partners />
-      <StartChapter />
     </main>
   );
 }

@@ -52,7 +52,7 @@ const DETAILS: DetailItem[] = [
   },
   {
     label: "RSVP",
-    body: "Goes live once the date is pinned. Until then, the chapter team is the way in.",
+    body: "Goes live once the date is pinned. Until then, the team is the way in.",
   },
 ];
 
@@ -188,9 +188,8 @@ export default function WomenInRadyCollab() {
                   The coalition of student builders.
                 </h3>
                 <p className="text-sm leading-relaxed text-neutral-300 sm:text-[15px]">
-                  San Diego is the founding chapter of a network that
-                  connects business, engineering, and science orgs into
-                  one room at every campus the network lands on.
+                  UCSD&apos;s coalition of student builders, connecting the
+                  business, engineering, and science orgs into one network.
                 </p>
               </div>
               <div className="glass-card flex flex-col gap-3 p-6 sm:p-7">
@@ -221,7 +220,7 @@ export default function WomenInRadyCollab() {
             </h2>
             <p className="font-sans mt-6 max-w-2xl text-base leading-relaxed text-neutral-300 sm:text-lg">
               Joining Founders Network puts you in the loop on this and the
-              rest of the chapter&apos;s programming. The application is
+              rest of the network&apos;s programming. The application is
               short and we read every one by hand.
             </p>
             <div className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4">

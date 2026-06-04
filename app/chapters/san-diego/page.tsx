@@ -70,8 +70,8 @@ const SLIDES: Slide[] = [
     title: <>SEN is now Founders Network.</>,
     body: (
       <>
-        Same organization with broader scope, and we are building it toward
-        chapter expansion beyond UCSD.
+        Same organization with broader scope, focused on connecting UCSD&apos;s
+        student builders into one network.
       </>
     ),
   },
@@ -107,7 +107,7 @@ const SLIDES: Slide[] = [
       },
       {
         label: "May 20",
-        body: "Entrepreneur-At-the-Table session with Mark Bowles, the chapter's closed-door operator format.",
+        body: "Entrepreneur-At-the-Table session with Mark Bowles, our closed-door operator format.",
       },
       {
         label: "End of the month",
@@ -122,8 +122,8 @@ const SLIDES: Slide[] = [
     body: (
       <>
         Off-campus at a ten-bed, four-and-a-half-bath lodge with games, an
-        outdoor BBQ, and a jacuzzi, where the founding cohort plans and
-        ships together for two days.
+        outdoor BBQ, and a jacuzzi, where the team plans and ships together
+        for two days.
       </>
     ),
     items: [
@@ -164,8 +164,8 @@ const SLIDES: Slide[] = [
     title: <>Every great company starts in a dorm room.</>,
     body: (
       <>
-        The rooms should be connected. Founders Network is the constellation
-        of student-builder chapters that share the same standards and the
+        The rooms should be connected. Founders Network is the coalition of
+        UCSD&apos;s student builders, sharing the same standards and the
         understanding that the proof of concept matters more than the pitch
         deck.
       </>
@@ -207,9 +207,9 @@ const SLIDES: Slide[] = [
     title: <>Now go and build something this week.</>,
     body: (
       <>
-        The site lives at ucsdfounders.com, and applications to charter
-        chapters elsewhere are open at /apply. The next GBM lands when
-        there is something worth gathering for.
+        The site lives at ucsdfounders.com, and applications to join are
+        open at /apply. The next GBM lands when there is something worth
+        gathering for.
       </>
     ),
   },

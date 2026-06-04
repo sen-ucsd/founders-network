@@ -104,7 +104,7 @@ export default function ApplyPage() {
 
           <header className="mt-10 sm:mt-14">
             <p className="text-[10px] font-medium uppercase tracking-[0.32em] text-neutral-300/85">
-              Start a Chapter
+              Join Founders Network
             </p>
             <h1 className="hero-text mt-4 text-5xl italic leading-[1.02] text-neutral-50 sm:text-6xl md:text-7xl">
               The application.
@@ -121,7 +121,7 @@ export default function ApplyPage() {
                 Who we&apos;re looking for
               </h2>
               <ul className="flex flex-col gap-3 text-sm leading-relaxed text-neutral-200 sm:text-[15px]">
-                <li>Students already building things on their campus.</li>
+                <li>Students already building things at UCSD.</li>
                 <li>
                   Curators who can convene other builders, not just attend
                   events.
@@ -141,8 +141,8 @@ export default function ApplyPage() {
                 Timeline
               </h2>
               <p className="text-sm leading-relaxed text-neutral-200 sm:text-[15px]">
-                Reply within seven days. If invited, two short conversations.
-                Charter follows.
+                Reply within seven days. If invited, two short conversations
+                with the team, then you&apos;re in.
               </p>
               <p className="text-[11px] uppercase tracking-[0.28em] text-neutral-400">
                 Reviewed Weekly · Reply within Seven Days
@@ -234,7 +234,7 @@ export default function ApplyPage() {
 
             <div className="grid gap-6">
               <EssayField
-                label="Why are you the person to start this chapter?"
+                label="Why do you want to be part of Founders Network?"
                 required
                 value={form.whyYou}
                 onChange={(v) => update("whyYou", v)}
@@ -384,8 +384,8 @@ function SuccessView({ name }: { name: string }) {
           </h1>
           <p className="text-base leading-relaxed text-neutral-300 sm:text-lg">
             We read every application by hand. Expect a reply within seven
-            days. If we move forward, you&apos;ll hear from one of the
-            founding team for two short conversations.
+            days. If we move forward, you&apos;ll hear from one of the team
+            for two short conversations.
           </p>
           <Link
             href="/"

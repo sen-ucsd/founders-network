@@ -2,7 +2,6 @@ import Link from "next/link";
 
 const NAV_ITEMS = [
   { label: "VISION", href: "/#vision", showOnMobile: false },
-  { label: "CHAPTERS", href: "/#chapters", showOnMobile: false },
   { label: "PROGRAMS", href: "/#programs", showOnMobile: false },
   { label: "COALITION", href: "/#coalition", showOnMobile: true },
   { label: "APPLY", href: "/apply", showOnMobile: true },

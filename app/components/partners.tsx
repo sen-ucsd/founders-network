@@ -54,8 +54,8 @@ export function Partners() {
             UCSD coalition.
           </h2>
           <p className="mt-5 text-base leading-relaxed text-neutral-300 sm:text-lg">
-            The orgs that make up the founding chapter, gathered at one
-            table across business, engineering, science, and design.
+            The orgs that make up the network, gathered at one table
+            across business, engineering, science, and design.
           </p>
         </div>
 

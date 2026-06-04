@@ -1,7 +1,7 @@
 /**
- * Vision section — adapted from SEN's homepage Vision section, with
- * `SEN` swapped for `Founders Network`. Includes the three pillars
- * (Build / Network / Ship) inlined as glass cards under the prose.
+ * Vision section. Adapted from SEN's homepage Vision section with
+ * the chapter-expansion framing stripped; Founders Network is a UCSD-
+ * scoped coalition now, so the prose stays anchored to one campus.
  *
  * Voice rules: lift SEN's wording verbatim where possible, no em
  * dashes, no "not X but Y" constructions, no filler eyebrow labels.
@@ -19,7 +19,7 @@ const PILLARS: Pillar[] = [
   },
   {
     title: "Network",
-    body: "A decentralized web of student founders. Access to a global collective of peers who are building the next decade.",
+    body: "Access to peers across UCSD's student-founder ecosystem who are building the next decade.",
   },
   {
     title: "Ship",
@@ -44,8 +44,8 @@ export function Mission() {
             Greatness rarely happens in isolation. It grows in the quiet hum
             of shared ambition and the friction of competing ideas. Founders
             Network is a return to the artisan builder, the student who
-            treats their campus as a forge, and treats other campuses as the
-            rest of the workshop.
+            treats their campus as a forge, and treats every org on it as
+            part of the workshop.
           </p>
         </div>
 

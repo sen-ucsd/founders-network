@@ -294,9 +294,9 @@ export default function FoundersHikePage() {
                   See you at Torrey Pines.
                 </h3>
                 <p className="text-sm leading-relaxed text-neutral-300 sm:text-[15px]">
-                  Look out for an email from the chapter once the date
-                  locks in. Bring water, decent shoes, and one project
-                  worth talking about on the walk.
+                  Look out for an email from the team once the date locks
+                  in. Bring water, decent shoes, and one project worth
+                  talking about on the walk.
                 </p>
               </div>
             ) : (
